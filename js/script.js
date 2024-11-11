@@ -67,11 +67,6 @@ function logout() {
 document.addEventListener("DOMContentLoaded", () => {
     const selectedPost = JSON.parse(sessionStorage.getItem("selectedPost"));
 
-    if (!selectedPost) {
-        alert("잘못된 접근입니다.");
-        window.location.href = "index.html"; // 인덱스 페이지로 이동
-    }
-
     // 게시글 정보 출력
     postTitle.textContent = selectedPost.title;
     postAuthor.textContent = `작성자: ${selectedPost.author}`;
