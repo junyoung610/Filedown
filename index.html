@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>게시판</title>
+        <link rel="stylesheet" href="./css/style.css" />
+    </head>
+    <body>
+        <h1>게시판</h1>
+        <div>
+            <input type="text" id="searchInput" placeholder="검색어 입력" />
+            <button id="searchBtn">검색</button>
+            <div id="welcomeMessage"></div>
+            <button id="authBtn"></button>
+            <button id="writeBtn">글쓰기</button>
+        </div>
+
+        <table id="boardList">
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+            </tr>
+        </table>
+
+        <script src="./js/script.js"></script>
+    </body>
+</html>
