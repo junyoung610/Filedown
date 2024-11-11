@@ -4,13 +4,34 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!selectedPost) {
         alert("잘못된 접근입니다.");
         window.location.href = "index.html"; // 인덱스 페이지로 이동
+        return; // 이후 코드 실행 방지
     }
 
     // 게시글 정보 출력
-    document.getElementById("postTitle").textContent = selectedPost.title;
-    document.getElementById("postAuthor").textContent = `작성자: ${selectedPost.author}`;
-    document.getElementById("postDate").textContent = `작성일: ${selectedPost.date}`;
-    document.getElementById("postContent").textContent = selectedPost.content;
+    const postTitle = document.getElementById("postTitle");
+    const postAuthor = document.getElementById("postAuthor");
+    const postDate = document.getElementById("postDate");
+    const postContent = document.getElementById("postContent");
+
+    postTitle.textContent = selectedPost.title;
+    postAuthor.textContent = `작성자: ${selectedPost.author}`;
+    postDate.textContent = `작성일: ${selectedPost.date}`;
+    postContent.textContent = selectedPost.content;
+
+    // 조회수 증가
+    const posts = JSON.parse(localStorage.getItem("posts")) || [];
+    const postIndex = posts.findIndex((post) => post.title === selectedPost.title);
+
+    if (postIndex !== -1) {
+        posts[postIndex].views = (posts[postIndex].views || 0) + 1; // 조회수 증가
+        localStorage.setItem("posts", JSON.stringify(posts)); // 수정된 게시글 배열 저장
+    }
+
+    // 조회수 화면 업데이트 (optional)
+    const postViews = document.getElementById("postViews");
+    if (postViews) {
+        postViews.textContent = `조회수: ${posts[postIndex].views}`;
+    }
 
     // 첨부파일이 있는 경우
     if (selectedPost.file) {
@@ -45,10 +66,4 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
-    // 조회수 증가
-    const posts = JSON.parse(localStorage.getItem("posts"));
-    const postIndex = sessionStorage.getItem("postIndex");
-    posts[postIndex].views++;
-    localStorage.setItem("posts", JSON.stringify(posts));
 });

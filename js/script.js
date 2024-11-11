@@ -1,3 +1,21 @@
+// 페이지 로드 시 실행될 함수
+window.onload = function () {
+    checkLoginStatus();
+    loadPosts(); // 게시글 목록 로드
+
+    // 글쓰기 버튼 클릭 시 이벤트
+    const writeBtn = document.getElementById("writeBtn");
+    writeBtn.addEventListener("click", function () {
+        // 글쓰기 페이지로 이동
+        if (localStorage.getItem("loggedInUser")) {
+            window.location.href = "write.html"; // 글쓰기 페이지로 이동
+        } else {
+            alert("로그인이 필요합니다.");
+            window.location.href = "login.html"; // 로그인 페이지로 이동
+        }
+    });
+};
+
 // 게시글 로드
 function loadPosts() {
     const posts = JSON.parse(localStorage.getItem("posts")) || [];
@@ -37,15 +55,12 @@ function loadPosts() {
     });
 }
 
-// 페이지 로드 시 초기화
-window.onload = () => {
-    checkLoginStatus();
-    loadPosts(); // 게시글 목록 로드
-};
-
 // 로그인 상태 확인 및 버튼 변경
 function checkLoginStatus() {
     const loggedInUser = localStorage.getItem("loggedInUser");
+    const welcomeMessage = document.getElementById("welcomeMessage");
+    const authBtn = document.getElementById("authBtn");
+
     if (loggedInUser) {
         welcomeMessage.textContent = `환영합니다, ${loggedInUser}님!`;
         authBtn.textContent = "로그아웃";
@@ -57,25 +72,9 @@ function checkLoginStatus() {
     }
 }
 
+// 로그아웃 처리
 function logout() {
     localStorage.removeItem("loggedInUser");
     alert("로그아웃 되었습니다.");
     window.location.reload();
 }
-
-// 게시글 상세 보기
-document.addEventListener("DOMContentLoaded", () => {
-    const selectedPost = JSON.parse(sessionStorage.getItem("selectedPost"));
-
-    // 게시글 정보 출력
-    postTitle.textContent = selectedPost.title;
-    postAuthor.textContent = `작성자: ${selectedPost.author}`;
-    postDate.textContent = `작성일: ${selectedPost.date}`;
-    postContent.textContent = selectedPost.content;
-
-    // 조회수 증가
-    const posts = JSON.parse(localStorage.getItem("posts"));
-    const postIndex = posts.findIndex((post) => post.title === selectedPost.title);
-    posts[postIndex].views++;
-    localStorage.setItem("posts", JSON.stringify(posts));
-});
